@@ -76,8 +76,6 @@ if save.lower() not in possible_answers or save.lower() in affirmative_answers:
     #get_file_name()
     file_name = get_file_name()
     plt.savefig(f"{os.getcwd()}/{file_name}.png")
-img = image.open(f"{os.getcwd()}/{file_name}.png")
-img.save('ic.ico')
 
 
 plt.show()
