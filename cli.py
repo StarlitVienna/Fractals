@@ -167,7 +167,7 @@ def onclick(event):
         zoomx = zoomx+(zoomx/1.2)
         global img_name
         img_name += 1
-        plt.savefig(f"{os.getcwd()}/vid/{img_name}.png", bbox_inches='tight', pad_inches=0.0, dpi=300)
+        #plt.savefig(f"{os.getcwd()}/vid/{img_name}.png", bbox_inches='tight', pad_inches=0.0, dpi=300)
         #plt.draw()
         #time.sleep(.2)
 def click_thread(event):
@@ -217,7 +217,6 @@ def repeat():
 
         zoom_mode = request_zoom()
         if zoom_mode:
-            print("aaaaaaaa")
             plt.connect('button_press_event', click_thread)
 
         save_image()
