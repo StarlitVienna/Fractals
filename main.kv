@@ -1,0 +1,67 @@
+#:import toast kivymd.toast.toast
+ScreenManager:
+    MainScreen
+
+<MainScreen>:
+    name: 'editor'
+    StackLayout:
+        orientation: 'tb-lr'
+        size_hint: 1, 1
+        #GridLayout:
+            #rows: 2
+            #orientation: 'tb-lr'
+            #size_hint: .45, .1
+            #Button:
+                #size_hint: .75, .25 
+                #text: 'a'
+        GridLayout:
+            padding: 20
+            rows: 6
+            size_hint: 1, 1
+            orientation: 'tb-lr'
+
+            MDTextField:
+                id: width
+                hint_text: 'Width'
+                mode: 'rectangle'
+            MDTextField:
+                id: height
+                hint_text: 'Height'
+                mode: 'rectangle'
+
+            MDTextField:
+                id: iterations
+                hint_text: 'Number of iterations'
+                mode: 'rectangle'
+                text: ''
+            MDTextField:
+                id: axis
+                hint_text: 'Axis [ON/off]'
+                mode: 'rectangle'
+                text: ''
+            MDTextField:
+                id: cmaps
+                hint_text: 'Color map'
+                mode: 'rectangle'
+                text: ''
+            MDTextField:
+                id: zoom
+                hint_text: 'Zoom Mode [ON/off]'
+                mode: 'rectangle'
+                text: ''
+
+
+
+
+
+            #( turn on/off button for axis )
+
+    StackLayout:
+        orientation: 'bt-lr'
+        size_hint: 1, .15
+        AnchorLayout:
+            MDRectangleFlatButton:
+                anchor_x: 'center'
+                text: 'Generate'
+                on_release: root.thread_gen(width.text, height.text, iterations.text, axis.text, cmaps.text, zoom.text)
+
