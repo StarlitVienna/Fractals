@@ -1,18 +1,13 @@
 import numpy
-import time
 import threading
 from functools import partial
 import matplotlib.pyplot as plt
-from tqdm import tqdm
 from PIL import Image as image
 import os
 import numba as nb
-from decimal import Decimal, getcontext
-import random
 from matplotlib.animation import FuncAnimation
 #from gmpy2 import mpfr, get_context
 #get_context().precision=10
-getcontext().prec=10
 if not os.path.isdir(f"{os.getcwd()}/fractals"):
     os.mkdir(f"{os.getcwd()}/fractals")
 @nb.njit(fastmath=True)
@@ -70,7 +65,7 @@ print(nx)
 #@nb.njit(fastmath=True)
 def gen(width, height, iterations, axis, cmap, zoom):
     result = numpy.zeros([height, width])
-    for row_index, Re in enumerate(tqdm(numpy.linspace(bboundx, eboundx, num=height))):
+    for row_index, Re in enumerate(numpy.linspace(bboundx, eboundx, num=height)):
         for column_index, Im in enumerate(numpy.linspace(bboundy, eboundy, num=width)):
             result[row_index, column_index] = mandelbrot(Re, Im, iterations)
     print(axis)
