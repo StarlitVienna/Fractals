@@ -11,6 +11,12 @@ Window.size = (350, 400)
 
 class MainScreen(Screen):
     print(plt.colormaps())
+    def switch_screen(self, name):
+        App.get_running_app().root.transition.direction = 'left'
+        App.get_running_app().root.current = name
+        pass
+
+
     def click_thread(event):
         cx, cy = event.xdata, event.ydata
 
@@ -22,25 +28,19 @@ class MainScreen(Screen):
         # load bar
         if iterations == '':
             iterations = 100
+        if cmap not in plt.colormaps():
+            cmap = 'twilight_shifted'
         
-        if axis == 'off':
-            axis = False
-        else:
-            axis = True
-
-        if zoom == '':
-            zoom = False
-        else:
-            zoom = True
-
         try:
             gen(int(width), int(height), int(iterations), axis, cmap, zoom)
         except Exception as e:
             print(e)
     #gen_graph()
 
-    def thread_gen(self, width, height, iterations, axis, cmap, zoom):
-        threading.Thread(target=partial(self.gen_graph, width, height, iterations, axis, cmap, zoom)).start()
+    def thread_gen(self):
+        ids = self.ids
+        setting_ids = App.get_running_app().root.get_screen('settings').ids
+        threading.Thread(target=partial(self.gen_graph, ids.width.text, ids.height.text, ids.iterations.text, setting_ids.axis.active, ids.cmap.text, setting_ids.zoom.active)).start()
 
 
 class ScreenManager(ScreenManager):
