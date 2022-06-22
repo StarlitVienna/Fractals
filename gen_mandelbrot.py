@@ -66,7 +66,7 @@ if zoom != 0:
 print(nx)
 iteration = 0
 #@nb.njit(fastmath=True)
-def gen(width, height, iterations, axis, cmap, zoom):
+def gen(width, height, iterations, axis, cmap, zoom, connect):
     global iteration
     iteration = iterations
     print(iterations)
@@ -78,43 +78,46 @@ def gen(width, height, iterations, axis, cmap, zoom):
             result[row_index, column_index] = mandelbrot(Re, Im, iterations)
     print(axis)
     img = plt.imshow(numpy.flipud(result.T), cmap=cmap, interpolation='bilinear', extent=[bboundx, eboundx, bboundy, eboundy])
-    if not axis and zoom and not connected:
+    if not axis and zoom and not connected and not connect:
         plt.axis('off')
         plt.connect('button_press_event', partial(onclick, width, height, iterations, axis, cmap, zoom, True))
         plt.show()
         print(iterations)
         return
-    elif not axis and zoom and connected:
+    elif not axis and zoom and connected and not connect:
         plt.axis('off')
         plt.draw()
         print(iterations)
         return
-    elif axis and zoom and not connected:
+    elif axis and zoom and not connected and not connect:
         plt.connect('button_press_event', partial(onclick, width, height, iterations, axis, cmap, zoom, True))
         plt.show()
+
+    elif axis and zoom and not connected and not connect:
+        plt.connect('button_press_event', partial(onclick, width, height, iterations, axis, cmap, zoom, True))
+        #plt.show()
         print(iterations)
         return
-    elif axis and zoom and connected:
+    elif axis and zoom and connected and not connect:
         plt.draw()
         print(iterations)
         return
 
-
-    elif not zoom and connected:
+    elif not zoom and connected and not connect:
         plt.disconnect()
         img = plt.imshow(numpy.flipud(result.T), cmap=cmap, interpolation='bilinear', extent=[-2, -1, -1, -1])
         plt.draw()
         print('worked')
 
-    if not axis and not zoom:
+    if not axis and not zoom and not connect:
         plt.axis('off')
         plt.show()
-    elif axis and not zoom:
+
+    elif axis and not zoom and not connect:
         plt.show()
 
 
-
-        pass
+    pass
 
         
     #show(cmap, width, height, axis, result, zoom, iterations)
@@ -135,6 +138,7 @@ def show(chosen_cmap, width, height, axis, result, zoom, iterations):
     #plt.figure(dpi=300)
     img = plt.imshow(result.T, cmap=chosen_cmap, interpolation='bilinear', extent=[bboundx, eboundx, bboundy, eboundy])
     plt.draw()
+    """
     if zoom and first:
         plt.connect('button_press_event', partial(click_thread, width, height, iterations, axis, chosen_cmap))
         plt.show()
@@ -153,7 +157,8 @@ def show(chosen_cmap, width, height, axis, result, zoom, iterations):
     elif axis and not zoom and not zooming:
         plt.show()
         return
-    img = None
+    """
+    #img = None
 
 #plt.xlabel('Re')
 #plt.ylabel('Im')
@@ -204,13 +209,13 @@ def onclick(width, height, iterations, axis, cmap, zoom, connected, event):
     #zoomx = 1
     iterations = iteration
     for i in range(1):
-        zoom_regulator = numpy.float(0.5/zoomx)
+        zoom_regulator = (0.5/zoomx)
         cx, cy = event.xdata, event.ydata
 
-        bboundx = float((cx-(zoom_regulator*1.5)))
-        eboundx = float((cx+(zoom_regulator*1.5)))
-        bboundy = float((cy-(zoom_regulator)))
-        eboundy = float((cy+(zoom_regulator)))
+        bboundx = (cx-(zoom_regulator*1.5))
+        eboundx = (cx+(zoom_regulator*1.5))
+        bboundy = (cy-(zoom_regulator))
+        eboundy = (cy+(zoom_regulator))
         """
         bboundx = cx-n
         eboundx= cx+n
@@ -223,7 +228,8 @@ def onclick(width, height, iterations, axis, cmap, zoom, connected, event):
         zoomx = zoomx+(zoomx)
         #if bboundy < 0:
         zooming = True
-        img = plt.imshow(numpy.flipud(gen(width, height, iterations, axis, cmap, zoom)), cmap='hot', interpolation='bilinear', extent=[bboundx, eboundx, bboundy, eboundy])
+        gen(width, height, iterations, axis, cmap, zoom, True)
+        #img = plt.imshow(numpy.flipud(), cmap='hot', interpolation='bilinear', extent=[bboundx, eboundx, bboundy, eboundy])
         plt.draw()
         #else:
             #img = plt.imshow(result.T, cmap='hot', interpolation='bilinear', extent=[bboundx, eboundx, -bboundy, -eboundy])
