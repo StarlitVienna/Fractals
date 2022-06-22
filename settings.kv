@@ -1,0 +1,28 @@
+<Settingssc>:
+    MDBoxLayout:
+        orientation: "vertical"
+
+        MDTopAppBar:
+            md_bg_color: app.theme_cls.bg_dark
+            elevation: 10
+            left_action_items: [['arrow-left', root.go_back]]
+
+
+
+        GridLayout:
+            cols: 2
+            orientation: 'tb-lr'
+            Label:
+                text: 'Zoom Mode [ON/off]'
+            Label:
+                text: 'Axis [ON/off]'
+            MDCheckbox:
+                id: zoom
+                active: True
+                pos_hint: {'center_x': 0, 'center_y': .5}
+            MDCheckbox:
+                id: axis
+                active: True
+                pos_hint: {'center_x': 0, 'center_y': .5}
+
+
