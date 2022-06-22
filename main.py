@@ -32,7 +32,7 @@ class MainScreen(Screen):
             cmap = 'twilight_shifted'
         
         try:
-            gen(int(width), int(height), int(iterations), axis, cmap, zoom)
+            gen(int(width), int(height), int(iterations), axis, cmap, zoom, False)
         except Exception as e:
             print(e)
     #gen_graph()
@@ -40,7 +40,7 @@ class MainScreen(Screen):
     def thread_gen(self):
         ids = self.ids
         setting_ids = App.get_running_app().root.get_screen('settings').ids
-        threading.Thread(target=partial(self.gen_graph, ids.width.text, ids.height.text, ids.iterations.text, setting_ids.axis.active, ids.cmap.text, setting_ids.zoom.active)).start()
+        self.gen_graph(ids.width.text, ids.height.text, ids.iterations.text, setting_ids.axis.active, ids.cmap.text, setting_ids.zoom.active)
 
 
 class ScreenManager(ScreenManager):
