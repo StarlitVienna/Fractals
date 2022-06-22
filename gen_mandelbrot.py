@@ -5,9 +5,11 @@ import matplotlib.pyplot as plt
 from PIL import Image as image
 import os
 import numba as nb
+import matplotlib
 from matplotlib.animation import FuncAnimation
 #from gmpy2 import mpfr, get_context
 #get_context().precision=10
+connected = False
 if not os.path.isdir(f"{os.getcwd()}/fractals"):
     os.mkdir(f"{os.getcwd()}/fractals")
 @nb.njit(fastmath=True)
@@ -62,18 +64,60 @@ if zoom != 0:
     bboundy = sy+(sy/zoom)
     eboundy = sy-(sy/zoom)
 print(nx)
+iteration = 0
 #@nb.njit(fastmath=True)
 def gen(width, height, iterations, axis, cmap, zoom):
+    global iteration
+    iteration = iterations
+    print(iterations)
+    print(iterations)
+    global connected
     result = numpy.zeros([height, width])
     for row_index, Re in enumerate(numpy.linspace(bboundx, eboundx, num=height)):
         for column_index, Im in enumerate(numpy.linspace(bboundy, eboundy, num=width)):
             result[row_index, column_index] = mandelbrot(Re, Im, iterations)
     print(axis)
-    if not axis:
+    img = plt.imshow(numpy.flipud(result.T), cmap=cmap, interpolation='bilinear', extent=[bboundx, eboundx, bboundy, eboundy])
+    if not axis and zoom and not connected:
         plt.axis('off')
-    if cmap == '':
-        cmap = 'hot'
-    show(cmap, width, height, axis, result, zoom, iterations)
+        plt.connect('button_press_event', partial(onclick, width, height, iterations, axis, cmap, zoom, True))
+        plt.show()
+        print(iterations)
+        return
+    elif not axis and zoom and connected:
+        plt.axis('off')
+        plt.draw()
+        print(iterations)
+        return
+    elif axis and zoom and not connected:
+        plt.connect('button_press_event', partial(onclick, width, height, iterations, axis, cmap, zoom, True))
+        plt.show()
+        print(iterations)
+        return
+    elif axis and zoom and connected:
+        plt.draw()
+        print(iterations)
+        return
+
+
+    elif not zoom and connected:
+        plt.disconnect()
+        img = plt.imshow(numpy.flipud(result.T), cmap=cmap, interpolation='bilinear', extent=[-2, -1, -1, -1])
+        plt.draw()
+        print('worked')
+
+    if not axis and not zoom:
+        plt.axis('off')
+        plt.show()
+    elif axis and not zoom:
+        plt.show()
+
+
+
+        pass
+
+        
+    #show(cmap, width, height, axis, result, zoom, iterations)
     
     return result.T
 #gen()
@@ -147,7 +191,8 @@ def save_image():
 zoomx = 1
 img_name = 1
 First = True
-def onclick(event, width, height, iterations, axis, cmap, zoom):
+def onclick(width, height, iterations, axis, cmap, zoom, connected, event):
+    global iteration
     global img
     global zoomx
     global bboundx
@@ -157,6 +202,7 @@ def onclick(event, width, height, iterations, axis, cmap, zoom):
     global First
     global zooming
     #zoomx = 1
+    iterations = iteration
     for i in range(1):
         zoom_regulator = numpy.float(0.5/zoomx)
         cx, cy = event.xdata, event.ydata
