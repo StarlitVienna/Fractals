@@ -1,8 +1,6 @@
 # Fractals
 Just some fractals :D
 
-*** Some problems to solve ***
-
 ![image](https://i.postimg.cc/jdmBfKwR/Nov13-221359.png)
 ![image](https://i.postimg.cc/pXpgyyd0/Nov13-221407.png)
 ![image](https://i.postimg.cc/DfC9217J/Nov13-221414.png)
